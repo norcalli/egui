@@ -23,6 +23,7 @@ pub struct Button {
     frame: bool,
     wrap: Option<bool>,
     min_size: Vec2,
+    stroke: Option<Stroke>,
 }
 
 impl Button {
@@ -33,6 +34,7 @@ impl Button {
             text_color: None,
             text_style: TextStyle::Button,
             fill: Default::default(),
+            stroke: None,
             sense: Sense::click(),
             small: false,
             frame: true,
@@ -58,6 +60,11 @@ impl Button {
 
     pub fn fill(mut self, fill: Option<Color32>) -> Self {
         self.fill = fill;
+        self
+    }
+
+    pub fn stroke(mut self, stroke: Option<Stroke>) -> Self {
+        self.stroke = stroke;
         self
     }
 
@@ -116,6 +123,7 @@ impl Button {
             text_color,
             text_style,
             fill,
+            stroke,
             sense,
             small,
             frame,
@@ -155,11 +163,12 @@ impl Button {
 
             if frame {
                 let fill = fill.unwrap_or(visuals.bg_fill);
+                let stroke = stroke.unwrap_or(visuals.bg_stroke);
                 ui.painter().rect(
                     rect.expand(visuals.expansion),
                     visuals.corner_radius,
                     fill,
-                    visuals.bg_stroke,
+                    stroke,
                 );
             }
 
